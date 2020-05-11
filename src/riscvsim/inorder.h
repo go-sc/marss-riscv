@@ -66,6 +66,7 @@ typedef struct INCore
     /*----------  Execution units  ----------*/
     CPUStage *ialu;
     CPUStage *imul;
+    CPUStage *imul32;
     CPUStage *idiv;
     CPUStage *fpu_alu;
     CPUStage *fpu_fma;

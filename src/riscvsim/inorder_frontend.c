@@ -204,8 +204,8 @@ read_fp_operand(INCore *core, int has_src, int *read_rs, int rs,
     {
         if (!core->fp_reg_status[rs])
         {
-            /* Floating point execution units start from ID 3 onwards */
-            for (i = 3; i < NUM_FWD_BUS; ++i)
+            /* Floating point execution units start from ID 4 onwards */
+            for (i = 4; i < NUM_FWD_BUS; ++i)
             {
                 if (core->fwd_latch[i].valid && core->fwd_latch[i].fp_dest
                     && (core->fwd_latch[i].rd == rs))
@@ -339,6 +339,10 @@ in_core_decode(INCore *core)
                     {
                         set_waw_lock_int_dest(s, &core->idiv[i], e->ins.rd);
                     }
+                    for (i = s->simcpu->params->num_mul32_stages - 1; i >= 0; i--)
+                    {
+                        set_waw_lock_int_dest(s, &core->imul32[i], e->ins.rd);
+                    }
                     for (i = s->simcpu->params->num_mul_stages - 1; i >= 0;
                          i--)
                     {
@@ -395,6 +399,17 @@ in_core_decode(INCore *core)
                 {
                     core->decode.stage_exec_done = FALSE;
                     core->imul[0] = core->decode;
+                }
+                else
+                {
+                    goto exit_decode;
+                }
+                break;
+            case FU_MUL32:
+                if (!core->imul32[0].has_data)
+                {
+                    core->decode.stage_exec_done = FALSE;
+                    core->imul32[0] = core->decode;
                 }
                 else
                 {

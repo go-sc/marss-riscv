@@ -555,6 +555,22 @@ static int virt_machine_parse_config(VirtMachineParams *p,
                               p->sim_params->num_mul_stages, stage_latency_str);
     }
 
+    tag_name = "num_mul32_stages";
+    if (vm_get_int(cfg, tag_name, &p->sim_params->num_mul32_stages) < 0) {
+      fprintf(stderr, "%s not found, selecting default value: %d\n", tag_name,
+              p->sim_params->num_mul32_stages);
+    }
+
+    tag_name = "mul32_stage_latency";
+    if (vm_get_str(cfg, tag_name, &str) < 0) {
+      fprintf(stderr, "%s not found, selecting default value\n", tag_name);
+    } else {
+      strncpy(stage_latency_str, str, LATENCY_STRING_MAX_LENGTH - 1);
+      stage_latency_str[LATENCY_STRING_MAX_LENGTH - 1] = '\0';
+      parse_stage_latency_str(&p->sim_params->mul32_stage_latency,
+                              p->sim_params->num_mul32_stages, stage_latency_str);
+    }
+
     tag_name = "num_div_stages";
     if (vm_get_int(cfg, tag_name, &p->sim_params->num_div_stages) < 0) {
         fprintf(stderr, "%s not found, selecting default value: %d\n",

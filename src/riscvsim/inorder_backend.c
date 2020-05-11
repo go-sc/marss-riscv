@@ -61,6 +61,11 @@ get_next_exec_stage(INCore *core, int cur_stage_id, int fu_type)
             stage = &core->imul[cur_stage_id + 1];
             break;
         }
+        case FU_MUL32:
+        {
+            stage = &core->imul32[cur_stage_id + 1];
+            break;
+        }
         case FU_DIV:
         {
             stage = &core->idiv[cur_stage_id + 1];
@@ -198,6 +203,12 @@ in_core_execute_all(INCore *core)
                         core->simcpu->params->div_stage_latency[i],
                         core->simcpu->params->num_div_stages - 1);
     }
+    for (i = core->simcpu->params->num_mul32_stages - 1; i >= 0; i--)
+    {
+        in_core_execute(core, i, FU_MUL32, &core->imul32[i],
+                        core->simcpu->params->mul32_stage_latency[i],
+                        core->simcpu->params->num_mul32_stages - 1);
+    }
     for (i = core->simcpu->params->num_mul_stages - 1; i >= 0; i--)
     {
         in_core_execute(core, i, FU_MUL, &core->imul[i],
@@ -266,6 +277,7 @@ flush_speculated_cpu_state(INCore *core, IMapEntry *e)
     cpu_stage_flush(&core->decode);
     flush_fu_stage(core, core->ialu, s->simcpu->params->num_alu_stages);
     flush_fu_stage(core, core->imul, s->simcpu->params->num_mul_stages);
+    flush_fu_stage(core, core->imul32, s->simcpu->params->num_mul32_stages);
     flush_fu_stage(core, core->idiv, s->simcpu->params->num_div_stages);
     flush_fu_stage(core, core->fpu_alu, s->simcpu->params->num_fpu_alu_stages);
     flush_fu_stage(core, core->fpu_fma, s->simcpu->params->num_fpu_fma_stages);
@@ -411,12 +423,11 @@ in_core_memory(INCore *core)
                 cpu_stage_flush(&core->fetch);
                 cpu_stage_flush(&core->decode);
                 cpu_stage_flush(&core->memory);
-                exec_unit_flush(core->ialu,
-                                s->simcpu->params->num_alu_stages);
-                exec_unit_flush(core->imul,
-                                s->simcpu->params->num_mul_stages);
-                exec_unit_flush(core->idiv,
-                                s->simcpu->params->num_div_stages);
+                exec_unit_flush(core->ialu, s->simcpu->params->num_alu_stages);
+                exec_unit_flush(core->imul, s->simcpu->params->num_mul_stages);
+                exec_unit_flush(core->imul32,
+                                s->simcpu->params->num_mul32_stages);
+                exec_unit_flush(core->idiv, s->simcpu->params->num_div_stages);
                 exec_unit_flush(core->fpu_alu,
                                 s->simcpu->params->num_fpu_alu_stages);
                 exec_unit_flush(core->fpu_fma,

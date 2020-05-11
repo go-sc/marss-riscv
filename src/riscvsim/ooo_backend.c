@@ -53,6 +53,11 @@ issue_ins_to_exec_unit(OOCore *core, IMapEntry *e)
             fu = &core->imul[0];
             break;
         }
+        case FU_MUL32:
+        {
+            fu = &core->imul32[0];
+            break;
+        }
         case FU_DIV:
         {
             fu = &core->idiv[0];
@@ -218,6 +223,11 @@ get_next_exec_stage(OOCore *core, int cur_stage_id, int fu_type)
             stage = &core->imul[cur_stage_id + 1];
             break;
         }
+        case FU_MUL32:
+        {
+            stage = &core->imul32[cur_stage_id + 1];
+            break;
+        }
         case FU_DIV:
         {
             stage = &core->idiv[cur_stage_id + 1];
@@ -335,6 +345,12 @@ oo_core_execute_all(OOCore *core)
         oo_core_execute(core, i, FU_DIV, &core->idiv[i],
                         core->simcpu->params->div_stage_latency[i],
                         core->simcpu->params->num_div_stages - 1);
+    }
+    for (i = core->simcpu->params->num_mul32_stages - 1; i >= 0; i--)
+    {
+        oo_core_execute(core, i, FU_MUL32, &core->imul32[i],
+                        core->simcpu->params->mul32_stage_latency[i],
+                        core->simcpu->params->num_mul32_stages - 1);
     }
     for (i = core->simcpu->params->num_mul_stages - 1; i >= 0; i--)
     {

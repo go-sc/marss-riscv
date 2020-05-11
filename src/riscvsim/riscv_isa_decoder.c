@@ -633,7 +633,7 @@ decode_compressed_type(struct RVInstruction *ins)
 }
 
 static void
-set_op_fu(RVInstruction *i)
+set_mul_div_fu(RVInstruction *i, int major_opcode)
 {
     uint32_t funct3;
     uint32_t insn = i->binary;
@@ -649,6 +649,10 @@ set_op_fu(RVInstruction *i)
             case 3: /* mulhu */
                 i->fu_type = FU_MUL;
                 i->type = INS_TYPE_INT_MUL;
+                if (major_opcode == OP_MASK_32)
+                {
+                    i->fu_type = FU_MUL32;
+                }
                 break;
             case 4: /* div */
             case 5: /* divu */
@@ -818,7 +822,7 @@ decode_riscv_binary(struct RVInstruction *ins, uint32_t insn)
                 ins->has_src2 = 1;
                 ins->has_dest = 1;
                 /* set the functional units for mul and div */
-                set_op_fu(ins);
+                set_mul_div_fu(ins, ins->major_opcode);
                 // ins->exception = 1;
                 // ins->exception_cause = 2;
                 break;

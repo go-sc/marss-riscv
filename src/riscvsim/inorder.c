@@ -54,6 +54,9 @@ in_core_init(const SimParams *p, struct RISCVSIMCPUState *simcpu)
     core->imul = (CPUStage *)calloc(p->num_mul_stages, sizeof(CPUStage));
     assert(core->imul);
 
+    core->imul32 = (CPUStage *)calloc(p->num_mul32_stages, sizeof(CPUStage));
+    assert(core->imul32);
+
     core->idiv = (CPUStage *)calloc(p->num_div_stages, sizeof(CPUStage));
     assert(core->idiv);
 
@@ -119,6 +122,7 @@ in_core_reset(void *core_type)
     /* Reset execution units */
     exec_unit_flush(core->ialu, core->simcpu->params->num_alu_stages);
     exec_unit_flush(core->imul, core->simcpu->params->num_mul_stages);
+    exec_unit_flush(core->imul32, core->simcpu->params->num_mul32_stages);
     exec_unit_flush(core->idiv, core->simcpu->params->num_div_stages);
     exec_unit_flush(core->fpu_alu, core->simcpu->params->num_fpu_alu_stages);
     exec_unit_flush(core->fpu_fma, core->simcpu->params->num_fpu_fma_stages);
@@ -143,6 +147,8 @@ in_core_free(void *core_type)
     core->fpu_alu = NULL;
     free(core->idiv);
     core->idiv = NULL;
+    free(core->imul32);
+    core->imul32 = NULL;
     free(core->imul);
     core->imul = NULL;
     free(core->ialu);
@@ -173,6 +179,14 @@ in_core_pipeline_drained(INCore *core)
     for (i = 0; i < simcpu->params->num_mul_stages; ++i)
     {
         if (core->imul[i].has_data)
+        {
+            return PIPELINE_NOT_DRAINED;
+        }
+    }
+
+    for (i = 0; i < simcpu->params->num_mul32_stages; ++i)
+    {
+        if (core->imul32[i].has_data)
         {
             return PIPELINE_NOT_DRAINED;
         }
