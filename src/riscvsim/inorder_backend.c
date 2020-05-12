@@ -71,6 +71,11 @@ get_next_exec_stage(INCore *core, int cur_stage_id, int fu_type)
             stage = &core->idiv[cur_stage_id + 1];
             break;
         }
+        case FU_DIV32:
+        {
+            stage = &core->idiv32[cur_stage_id + 1];
+            break;
+        }
         case FU_FPU_ALU:
         {
             stage = &core->fpu_alu[cur_stage_id + 1];
@@ -197,6 +202,12 @@ in_core_execute_all(INCore *core)
                         core->simcpu->params->fpu_alu_stage_latency[i],
                         core->simcpu->params->num_fpu_alu_stages - 1);
     }
+    for (i = core->simcpu->params->num_div32_stages - 1; i >= 0; i--)
+    {
+        in_core_execute(core, i, FU_DIV32, &core->idiv32[i],
+                        core->simcpu->params->div32_stage_latency[i],
+                        core->simcpu->params->num_div32_stages - 1);
+    }
     for (i = core->simcpu->params->num_div_stages - 1; i >= 0; i--)
     {
         in_core_execute(core, i, FU_DIV, &core->idiv[i],
@@ -279,6 +290,7 @@ flush_speculated_cpu_state(INCore *core, IMapEntry *e)
     flush_fu_stage(core, core->imul, s->simcpu->params->num_mul_stages);
     flush_fu_stage(core, core->imul32, s->simcpu->params->num_mul32_stages);
     flush_fu_stage(core, core->idiv, s->simcpu->params->num_div_stages);
+    flush_fu_stage(core, core->idiv32, s->simcpu->params->num_div32_stages);
     flush_fu_stage(core, core->fpu_alu, s->simcpu->params->num_fpu_alu_stages);
     flush_fu_stage(core, core->fpu_fma, s->simcpu->params->num_fpu_fma_stages);
 
@@ -428,6 +440,8 @@ in_core_memory(INCore *core)
                 exec_unit_flush(core->imul32,
                                 s->simcpu->params->num_mul32_stages);
                 exec_unit_flush(core->idiv, s->simcpu->params->num_div_stages);
+                exec_unit_flush(core->idiv32,
+                                s->simcpu->params->num_div32_stages);
                 exec_unit_flush(core->fpu_alu,
                                 s->simcpu->params->num_fpu_alu_stages);
                 exec_unit_flush(core->fpu_fma,
