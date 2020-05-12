@@ -133,6 +133,15 @@ sim_params_init()
         p->fpu_fma_stage_latency[i] = DEF_STAGE_LATENCY;
     }
 
+    p->num_fpu_alu2_stages = DEF_NUM_FPU_ALU2_STAGES;
+    p->fpu_alu2_stage_latency
+        = (int *)malloc(sizeof(int) * p->num_fpu_alu2_stages);
+    assert(p->fpu_alu2_stage_latency);
+    for (i = 0; i < p->num_fpu_alu2_stages; ++i)
+    {
+        p->fpu_alu2_stage_latency[i] = DEF_STAGE_LATENCY;
+    }
+
     p->num_fpu_alu3_stages = DEF_NUM_FPU_ALU3_STAGES;
     p->fpu_alu3_stage_latency
         = (int *)malloc(sizeof(int) * p->num_fpu_alu3_stages);
@@ -283,6 +292,8 @@ sim_params_print(const SimParams *p)
                     p->num_div32_stages, p->div32_stage_latency);
     print_fu_config("num_fpu_alu_stages", "fpu_alu_stage_latencies",
                     p->num_fpu_alu_stages, p->fpu_alu_stage_latency);
+    print_fu_config("num_fpu_alu2_stages", "fpu_alu2_stage_latencies",
+                    p->num_fpu_alu2_stages, p->fpu_alu2_stage_latency);
     print_fu_config("num_fpu_alu3_stages", "fpu_alu3_stage_latencies",
                     p->num_fpu_alu3_stages, p->fpu_alu3_stage_latency);
     print_fu_config("num_fpu_fma_stages", "fpu_fma_stage_latencies",
@@ -451,6 +462,8 @@ sim_params_free(SimParams *p)
     p->div32_stage_latency = NULL;
     free(p->fpu_alu_stage_latency);
     p->fpu_alu_stage_latency = NULL;
+    free(p->fpu_alu2_stage_latency);
+    p->fpu_alu2_stage_latency = NULL;
     free(p->fpu_alu3_stage_latency);
     p->fpu_alu3_stage_latency = NULL;
     free(p->fpu_fma_stage_latency);
@@ -577,6 +590,13 @@ sim_params_validate(const SimParams *p)
     {
         validate_param("fpu_alu_stage_latency", 0, 1, 2048,
                        p->fpu_alu_stage_latency[i]);
+    }
+
+    validate_param("num_fpu_alu2_stages", 0, 1, 2048, p->num_fpu_alu2_stages);
+    for (i = 0; i < p->num_fpu_alu2_stages; ++i)
+    {
+        validate_param("fpu_alu2_stage_latency", 0, 1, 2048,
+                       p->fpu_alu2_stage_latency[i]);
     }
 
     validate_param("num_fpu_alu3_stages", 0, 1, 2048, p->num_fpu_alu3_stages);

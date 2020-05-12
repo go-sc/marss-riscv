@@ -42,6 +42,17 @@
 case (0x00 << 2) | OPID: /* fadd */
 case (0x01 << 2) | OPID: /* fsub */
 case (0x02 << 2) | OPID: /* fmul */
+{
+    if (ins->rm < 0)
+        goto exception;
+    ins->set_fs = 1;
+    ins->has_fp_src1 = 1;
+    ins->has_fp_src2 = 1;
+    ins->has_fp_dest = 1;
+    ins->fu_type = FU_FPU_ALU2;
+}
+break;
+
 case (0x03 << 2) | OPID: /* fdiv */
 {
     if (ins->rm < 0)
