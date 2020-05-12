@@ -96,10 +96,10 @@ typedef struct OOCore
     CPUStage *imul32;    /* INT-32 Multiplier for 64-bit simulation */
     CPUStage *idiv;    /* INT Divider */
     CPUStage *idiv32;    /* INT-32 Divider for 64-bit simulation */
-    CPUStage *fpu_alu; /* FP ALU */
+    CPUStage *fpu_alu;  /* FP ALU : fdiv/fclass/fcvt/feq/flt/fle/fmv/fsgnj */
     CPUStage *fpu_alu2; /* FP ALU 2: fadd/fmul/fsub */
     CPUStage *fpu_alu3; /* FP ALU 3: fmin/fmax/fsqrt */
-    CPUStage *fpu_fma; /* FP Fused Multiply Add */
+    CPUStage *fpu_fma;  /* FP Fused Multiply Add */
 
     /*----------  Memory Stage  ----------*/
     CPUStage lsu; /* Load-Store Unit unit, works with LSQ */
