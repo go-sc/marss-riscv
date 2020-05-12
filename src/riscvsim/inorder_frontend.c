@@ -366,6 +366,11 @@ in_core_decode(INCore *core)
                 {
                     set_waw_lock_fp_dest(s, &core->commit, e->ins.rd);
                     set_waw_lock_fp_dest(s, &core->memory, e->ins.rd);
+                    for (i = s->simcpu->params->num_fpu_alu3_stages - 1; i >= 0;
+                         i--)
+                    {
+                        set_waw_lock_fp_dest(s, &core->fpu_alu3[i], e->ins.rd);
+                    }
                     for (i = s->simcpu->params->num_fpu_fma_stages - 1;
                          i >= 0; i--)
                     {
@@ -447,6 +452,17 @@ in_core_decode(INCore *core)
                 {
                     core->decode.stage_exec_done = FALSE;
                     core->fpu_alu[0] = core->decode;
+                }
+                else
+                {
+                    goto exit_decode;
+                }
+                break;
+            case FU_FPU_ALU3:
+                if (!core->fpu_alu3[0].has_data)
+                {
+                    core->decode.stage_exec_done = FALSE;
+                    core->fpu_alu3[0] = core->decode;
                 }
                 else
                 {

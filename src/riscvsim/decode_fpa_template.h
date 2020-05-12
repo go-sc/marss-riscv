@@ -60,6 +60,7 @@ case (0x0b << 2) | OPID: /* fsqrt */
     ins->set_fs = 1;
     ins->has_fp_src1 = 1;
     ins->has_fp_dest = 1;
+    ins->fu_type = FU_FPU_ALU3;
 }
 break;
 
@@ -78,6 +79,7 @@ case (0x05 << 2) | OPID: /* fmin-fmax */
     ins->has_fp_src1 = 1;
     ins->has_fp_src2 = 1;
     ins->has_fp_dest = 1;
+    ins->fu_type = FU_FPU_ALU3;
 }
 break;
 

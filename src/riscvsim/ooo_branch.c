@@ -329,6 +329,8 @@ rollback_speculated_cpu_state(OOCore *core, IMapEntry *e)
                e->ins_dispatch_id, core->simcpu->imap);
     restore_fu(core->fpu_alu, core->simcpu->params->num_fpu_alu_stages,
                e->ins_dispatch_id, core->simcpu->imap);
+    restore_fu(core->fpu_alu3, core->simcpu->params->num_fpu_alu3_stages,
+               e->ins_dispatch_id, core->simcpu->imap);
     restore_fu(core->fpu_fma, core->simcpu->params->num_fpu_fma_stages,
                e->ins_dispatch_id, core->simcpu->imap);
     restore_lsq(core, e->ins_dispatch_id);
