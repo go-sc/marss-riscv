@@ -39,9 +39,8 @@
 #define FU_DIV 0x3
 #define FU_DIV32 0x4
 #define FU_FPU_ALU 0x5
-#define FU_FPU_ALU3 0x6
-#define FU_FPU_FMA 0x7
-#define NUM_MAX_FU 8
+#define FU_FPU_FMA 0x6
+#define NUM_MAX_FU 7
 
 /* Type of Branch instructions */
 #define BRANCH_UNCOND 0x0
@@ -89,8 +88,8 @@
 #define NUM_CPU_STAGES 5 /* Excluding the functional units which are allocated separately */
 #define NUM_INT_REG 32
 #define NUM_FP_REG 32
-#define NUM_FU 8 /* ALU, MUL, MUL-32, DIV, DIV-32, FP ALU, FP FMA, FP FPU-ALU3 */
-#define NUM_FWD_BUS 9 /* Total 9 forwarding buses, 8 for functional units  and 1 for memory stage */
+#define NUM_FU 7 /* ALU, MUL, MUL-32, DIV, DIV-32, FP ALU, FP FMA */
+#define NUM_FWD_BUS 8 /* Total 8 forwarding buses, 7 for functional units  and 1 for memory stage */
 #define INCORE_NUM_INS_DISPATCH_QUEUE_ENTRY 16
 #define SPEC_REG_STATE_ENTRY 128
 

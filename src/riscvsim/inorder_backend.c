@@ -81,11 +81,6 @@ get_next_exec_stage(INCore *core, int cur_stage_id, int fu_type)
             stage = &core->fpu_alu[cur_stage_id + 1];
             break;
         }
-        case FU_FPU_ALU3:
-        {
-            stage = &core->fpu_alu3[cur_stage_id + 1];
-            break;
-        }
         case FU_FPU_FMA:
         {
             stage = &core->fpu_fma[cur_stage_id + 1];
@@ -201,12 +196,6 @@ in_core_execute_all(INCore *core)
                         core->simcpu->params->fpu_fma_stage_latency[i],
                         core->simcpu->params->num_fpu_fma_stages - 1);
     }
-    for (i = core->simcpu->params->num_fpu_alu3_stages - 1; i >= 0; i--)
-    {
-        in_core_execute(core, i, FU_FPU_ALU3, &core->fpu_alu3[i],
-                        core->simcpu->params->fpu_alu3_stage_latency[i],
-                        core->simcpu->params->num_fpu_alu3_stages - 1);
-    }
     for (i = core->simcpu->params->num_fpu_alu_stages - 1; i >= 0; i--)
     {
         in_core_execute(core, i, FU_FPU_ALU, &core->fpu_alu[i],
@@ -303,7 +292,6 @@ flush_speculated_cpu_state(INCore *core, IMapEntry *e)
     flush_fu_stage(core, core->idiv, s->simcpu->params->num_div_stages);
     flush_fu_stage(core, core->idiv32, s->simcpu->params->num_div32_stages);
     flush_fu_stage(core, core->fpu_alu, s->simcpu->params->num_fpu_alu_stages);
-    flush_fu_stage(core, core->fpu_alu3, s->simcpu->params->num_fpu_alu3_stages);
     flush_fu_stage(core, core->fpu_fma, s->simcpu->params->num_fpu_fma_stages);
 
     /* Reset FU to MEM selector queue */

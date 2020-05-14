@@ -66,12 +66,8 @@ in_core_init(const SimParams *p, struct RISCVSIMCPUState *simcpu)
     core->fpu_alu = (CPUStage *)calloc(p->num_fpu_alu_stages, sizeof(CPUStage));
     assert(core->fpu_alu);
 
-    core->fpu_alu3 = (CPUStage *)calloc(p->num_fpu_alu3_stages, sizeof(CPUStage));
-    assert(core->fpu_alu3);
-
     core->fpu_fma = (CPUStage *)calloc(p->num_fpu_fma_stages, sizeof(CPUStage));
     assert(core->fpu_fma);
-
 
     /* Create FU to Memory selection queue */
     cq_init(&core->ins_dispatch_queue.cq, INCORE_NUM_INS_DISPATCH_QUEUE_ENTRY);
@@ -133,7 +129,6 @@ in_core_reset(void *core_type)
     exec_unit_flush(core->idiv, core->simcpu->params->num_div_stages);
     exec_unit_flush(core->idiv32, core->simcpu->params->num_div32_stages);
     exec_unit_flush(core->fpu_alu, core->simcpu->params->num_fpu_alu_stages);
-    exec_unit_flush(core->fpu_alu3, core->simcpu->params->num_fpu_alu3_stages);
     exec_unit_flush(core->fpu_fma, core->simcpu->params->num_fpu_fma_stages);
 
     /* Reset EX to Memory queue */
@@ -152,8 +147,6 @@ in_core_free(void *core_type)
     core = (INCore *)(*(INCore **)core_type);
     free(core->fpu_fma);
     core->fpu_fma = NULL;
-    free(core->fpu_alu3);
-    core->fpu_alu3 = NULL;
     free(core->fpu_alu);
     core->fpu_alu = NULL;
     free(core->idiv32);
@@ -224,14 +217,6 @@ in_core_pipeline_drained(INCore *core)
     for (i = 0; i < simcpu->params->num_fpu_alu_stages; ++i)
     {
         if (core->fpu_alu[i].has_data)
-        {
-            return PIPELINE_NOT_DRAINED;
-        }
-    }
-
-    for (i = 0; i < simcpu->params->num_fpu_alu3_stages; ++i)
-    {
-        if (core->fpu_alu3[i].has_data)
         {
             return PIPELINE_NOT_DRAINED;
         }

@@ -620,23 +620,6 @@ static int virt_machine_parse_config(VirtMachineParams *p,
                               stage_latency_str);
     }
 
-    tag_name = "num_fpu_alu3_stages";
-    if (vm_get_int(cfg, tag_name, &p->sim_params->num_fpu_alu3_stages) < 0) {
-        fprintf(stderr, "%s not found, selecting default value: %d\n",
-                tag_name, p->sim_params->num_fpu_alu3_stages);
-    }
-
-    tag_name = "fpu_alu3_stage_latency";
-    if (vm_get_str(cfg, tag_name, &str) < 0) {
-      fprintf(stderr, "%s not found, selecting default value\n", tag_name);
-    } else {
-      strncpy(stage_latency_str, str, LATENCY_STRING_MAX_LENGTH - 1);
-      stage_latency_str[LATENCY_STRING_MAX_LENGTH - 1] = '\0';
-      parse_stage_latency_str(&p->sim_params->fpu_alu3_stage_latency,
-                              p->sim_params->num_fpu_alu3_stages,
-                              stage_latency_str);
-    }
-
     tag_name = "num_fpu_fma_stages";
     if (vm_get_int(cfg, tag_name, &p->sim_params->num_fpu_fma_stages) < 0) {
         fprintf(stderr, "%s not found, selecting default value: %d\n",

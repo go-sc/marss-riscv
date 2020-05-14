@@ -73,11 +73,6 @@ issue_ins_to_exec_unit(OOCore *core, IMapEntry *e)
             fu = &core->fpu_alu[0];
             break;
         }
-        case FU_FPU_ALU3:
-        {
-            fu = &core->fpu_alu3[0];
-            break;
-        }
         case FU_FPU_FMA:
         {
             fu = &core->fpu_fma[0];
@@ -253,11 +248,6 @@ get_next_exec_stage(OOCore *core, int cur_stage_id, int fu_type)
             stage = &core->fpu_alu[cur_stage_id + 1];
             break;
         }
-        case FU_FPU_ALU3:
-        {
-            stage = &core->fpu_alu3[cur_stage_id + 1];
-            break;
-        }
         case FU_FPU_FMA:
         {
             stage = &core->fpu_fma[cur_stage_id + 1];
@@ -353,12 +343,6 @@ oo_core_execute_all(OOCore *core)
         oo_core_execute(core, i, FU_FPU_FMA, &core->fpu_fma[i],
                         core->simcpu->params->fpu_fma_stage_latency[i],
                         core->simcpu->params->num_fpu_fma_stages - 1);
-    }
-    for (i = core->simcpu->params->num_fpu_alu3_stages - 1; i >= 0; i--)
-    {
-        oo_core_execute(core, i, FU_FPU_ALU3, &core->fpu_alu3[i],
-                        core->simcpu->params->fpu_alu3_stage_latency[i],
-                        core->simcpu->params->num_fpu_alu3_stages - 1);
     }
     for (i = core->simcpu->params->num_fpu_alu_stages - 1; i >= 0; i--)
     {
