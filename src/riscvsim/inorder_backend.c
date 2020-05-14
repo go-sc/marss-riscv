@@ -468,10 +468,6 @@ in_core_memory(INCore *core)
                                 s->simcpu->params->num_div32_stages);
                 exec_unit_flush(core->fpu_alu,
                                 s->simcpu->params->num_fpu_alu_stages);
-                exec_unit_flush(core->fpu_alu2,
-                                s->simcpu->params->num_fpu_alu2_stages);
-                exec_unit_flush(core->fpu_alu3,
-                                s->simcpu->params->num_fpu_alu3_stages);
                 exec_unit_flush(core->fpu_fma,
                                 s->simcpu->params->num_fpu_fma_stages);
                 return;
