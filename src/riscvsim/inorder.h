@@ -69,10 +69,10 @@ typedef struct INCore
     CPUStage *imul32;
     CPUStage *idiv;
     CPUStage *idiv32;
-    CPUStage *fpu_alu;  /* FP ALU : fdiv/fclass/fcvt/feq/flt/fle/fmv/fsgnj */
-    CPUStage *fpu_alu2; /* FP ALU 2: fadd/fmul/fsub */
-    CPUStage *fpu_alu3; /* FP ALU 3: fmin/fmax/fsqrt */
-    CPUStage *fpu_fma;  /* FP Fused Multiply Add */
+    CPUStage *fpu_alu;
+    CPUStage *fpu_fma;
+    CPUStage *fpu_alu2;
+    CPUStage *fpu_alu3;
 
     /*----------  Pointer to 5 or 6 stage run() function  ----------*/
     int (*pfn_incore_run_internal)(struct INCore *core);
