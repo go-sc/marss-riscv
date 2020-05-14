@@ -107,14 +107,6 @@ sim_params_init()
         p->div_stage_latency[i] = DEF_STAGE_LATENCY;
     }
 
-    p->num_div32_stages = DEF_NUM_DIV32_STAGES;
-    p->div32_stage_latency = (int *)malloc(sizeof(int) * p->num_div32_stages);
-    assert(p->div32_stage_latency);
-    for (i = 0; i < p->num_div32_stages; ++i)
-    {
-        p->div32_stage_latency[i] = DEF_STAGE_LATENCY;
-    }
-
     p->num_fpu_alu_stages = DEF_NUM_FPU_ALU_STAGES;
     p->fpu_alu_stage_latency
         = (int *)malloc(sizeof(int) * p->num_fpu_alu_stages);
@@ -270,8 +262,6 @@ sim_params_print(const SimParams *p)
                     p->mul32_stage_latency);
     print_fu_config("num_div_stages", "div_stage_latencies", p->num_div_stages,
                     p->div_stage_latency);
-    print_fu_config("num_div32_stages", "div32_stage_latencies",
-                    p->num_div32_stages, p->div32_stage_latency);
     print_fu_config("num_fpu_alu_stages", "fpu_alu_stage_latencies",
                     p->num_fpu_alu_stages, p->fpu_alu_stage_latency);
     print_fu_config("num_fpu_fma_stages", "fpu_fma_stage_latencies",
@@ -436,8 +426,6 @@ sim_params_free(SimParams *p)
     p->mul32_stage_latency = NULL;
     free(p->div_stage_latency);
     p->div_stage_latency = NULL;
-    free(p->div32_stage_latency);
-    p->div32_stage_latency = NULL;
     free(p->fpu_alu_stage_latency);
     p->fpu_alu_stage_latency = NULL;
     free(p->fpu_fma_stage_latency);
@@ -550,13 +538,6 @@ sim_params_validate(const SimParams *p)
     {
         validate_param("div_stage_latency", 0, 1, 2048,
                        p->div_stage_latency[i]);
-    }
-
-    validate_param("num_div32_stages", 0, 1, 2048, p->num_div32_stages);
-    for (i = 0; i < p->num_div32_stages; ++i)
-    {
-        validate_param("div32_stage_latency", 0, 1, 2048,
-                       p->div32_stage_latency[i]);
     }
 
     validate_param("num_fpu_alu_stages", 0, 1, 2048, p->num_fpu_alu_stages);

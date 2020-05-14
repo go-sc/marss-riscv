@@ -118,7 +118,6 @@ enum MEM_MODEL_TYPE
 #define DEF_NUM_MUL_STAGES 1
 #define DEF_NUM_MUL32_STAGES 1
 #define DEF_NUM_DIV_STAGES 1
-#define DEF_NUM_DIV32_STAGES 1
 #define DEF_NUM_FPU_ALU_STAGES 1
 #define DEF_NUM_FPU_FMA_STAGES 1
 #define DEF_STAGE_LATENCY 1
@@ -253,9 +252,6 @@ typedef struct SimParams
 
     int num_div_stages;
     int *div_stage_latency;
-
-    int num_div32_stages;
-    int *div32_stage_latency;
 
     int num_fpu_alu_stages;
     int *fpu_alu_stage_latency;

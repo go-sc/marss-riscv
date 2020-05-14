@@ -68,7 +68,6 @@ typedef struct INCore
     CPUStage *imul;
     CPUStage *imul32;
     CPUStage *idiv;
-    CPUStage *idiv32;
     CPUStage *fpu_alu;
     CPUStage *fpu_fma;
 

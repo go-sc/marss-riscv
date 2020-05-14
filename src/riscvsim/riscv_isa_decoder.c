@@ -660,10 +660,6 @@ set_mul_div_fu(RVInstruction *i, int major_opcode)
             case 7: /* remu */
                 i->fu_type = FU_DIV;
                 i->type = INS_TYPE_INT_DIV;
-                if (major_opcode == OP_MASK_32)
-                {
-                    i->fu_type = FU_DIV32;
-                }
                 break;
         }
     }

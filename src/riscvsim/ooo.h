@@ -95,7 +95,6 @@ typedef struct OOCore
     CPUStage *imul;    /* INT Multiplier */
     CPUStage *imul32;    /* INT-32 Multiplier for 64-bit simulation */
     CPUStage *idiv;    /* INT Divider */
-    CPUStage *idiv32;    /* INT-32 Divider for 64-bit simulation */
     CPUStage *fpu_alu; /* FP ALU */
     CPUStage *fpu_fma; /* FP Fused Multiply Add */
 
