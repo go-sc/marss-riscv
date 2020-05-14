@@ -79,9 +79,6 @@ oo_core_init(const SimParams *p, struct RISCVSIMCPUState *simcpu)
     core->fpu_alu = (CPUStage *)calloc(p->num_fpu_alu_stages, sizeof(CPUStage));
     assert(core->fpu_alu);
 
-    core->fpu_alu2 = (CPUStage *)calloc(p->num_fpu_alu2_stages, sizeof(CPUStage));
-    assert(core->fpu_alu2);
-
     core->fpu_alu3 = (CPUStage *)calloc(p->num_fpu_alu3_stages, sizeof(CPUStage));
     assert(core->fpu_alu3);
 
@@ -137,7 +134,6 @@ oo_core_reset(void *core_type)
     exec_unit_flush(core->idiv, core->simcpu->params->num_div_stages);
     exec_unit_flush(core->idiv32, core->simcpu->params->num_div32_stages);
     exec_unit_flush(core->fpu_alu, core->simcpu->params->num_fpu_alu_stages);
-    exec_unit_flush(core->fpu_alu2, core->simcpu->params->num_fpu_alu2_stages);
     exec_unit_flush(core->fpu_alu3, core->simcpu->params->num_fpu_alu3_stages);
     exec_unit_flush(core->fpu_fma, core->simcpu->params->num_fpu_fma_stages);
 }
@@ -216,8 +212,6 @@ oo_core_free(void *core_type)
     core->idiv = NULL;
     free(core->fpu_alu);
     core->fpu_alu = NULL;
-    free(core->fpu_alu2);
-    core->fpu_alu2 = NULL;
     free(core->fpu_alu3);
     core->fpu_alu3 = NULL;
     free(core->fpu_fma);
